@@ -49,6 +49,7 @@ if __name__ == '__main__':
                 dataset['acs'], dataset['pos'] = \
                     convert_Odometry(sample_data[topic], config['action_noise'],
                                         config['lower_bound'], config["upper_bound"])
+                dataset["odom"] = dataset["pos"]
             elif topic_type == "geometry_msgs/Twist":
                 print("==== convert twist ====")
                 dataset['acs'], dataset['pos'] = convert_Twist(sample_data[topic], config['action_noise'], config['lower_bound'], config["upper_bound"], hz=config["hz"], use_pose=True)
@@ -95,7 +96,7 @@ if __name__ == '__main__':
                     data = torch.tensor(traj_data, dtype=torch.float32)
                 with open(path, "wb") as f:
                     torch.save(data, f)
-        
+
         with open(os.path.join(out_dir, 'info.txt'), 'w') as f:
             info = config
             info['num_steps'] = num_steps
